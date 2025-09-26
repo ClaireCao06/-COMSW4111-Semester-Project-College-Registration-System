@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>University Course Registration System</title>
+    <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+  </head>
+
+  <body>
+    <h1>University Course Registration System</h1>
+    <div>
+      <a href = "{{url_for('student_login')}}"><button class = 'index-button'>Student</button></a>     
+      <a href = "{{url_for('instructor_login')}}"><button class = 'index-button'>Instructor</button></a> 
+      <a href = "{{url_for('admin_login')}}"><button class = 'index-button'>Admin</button></a>           
+    </div>
+  </body>
+</html>
+
+
+

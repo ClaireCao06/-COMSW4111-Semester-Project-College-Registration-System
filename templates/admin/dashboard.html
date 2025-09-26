@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>Admin Dashboard</title>
+        <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+    </head>
+
+    <body>
+        <h1>Welcome, admin {{admin_id}} !</h1>
+        <div>
+            <a href="{{url_for('admin_login', year = year, term = term)}}" class = "backlink">Back to Login</a>
+        </div>
+
+
+        <h2>Select a year-term: </h2>
+        <form method = "GET" action = "{{url_for('admin_dashboard')}}">
+            <label for = "year_terms">Term:</label>
+            <select name = "year_terms" id = "year_terms">
+                {% for year, terms_list in year_terms.items() %}
+                    {% for term in terms_list %}
+                    <option value = "{{year}},{{term}}">{{year}} {{term}}</option>
+                    {% endfor %}
+                {% endfor %}
+            </select>
+            <button type = "submit">Submit</button>
+        </form>
+
+
+        <h2>Or Create a new year-term: </h2>
+        <form method = "POST" action = "{{url_for('admin_dashboard')}}">
+            <label for = "new_year">Year:</label>
+            <input type = "number" placeholder = "2000" name = "new_year" id = "new_year" min = "2000" max = "9990" required>
+            
+            <label for = "new_term">Term:</label>
+            <select name = "new_term" id = "new_term" required>
+                <option value = "Fall">Fall</option>
+                <option value = "Spring">Spring</option>
+                <option value = "Summer">Summer</option>
+            </select>
+
+            <label for = "add_wl_ddl">Add/Waitlist Deadline:</label>
+            <input type = "date" name = "add_wl_ddl" id = "add_wl_ddl" required>
+            
+            <label for = "drop_ddl">Drop Deadline:</label>
+            <input type = "date" name = "drop_ddl" id = "drop_ddl" required>
+            
+            <button type = "submit">Create</button>
+        </form>
+
+        {% if error_message %}
+            <div style="color: red; margin-top: 20px;">
+                <strong>{{error_message}}</strong>
+            </div>
+        {% elif message %}
+            <div style="color: green; margin-top: 20px;">
+                <strong>{{message}}</strong>
+            </div>
+        {% endif %}
+
+        <h3>Term Ranges:</h3>
+        <ul>
+            <li><strong>Spring:</strong> Jan 1 - May 24</li>
+            <li><strong>Summer:</strong> May 25 - Aug 15</li>
+            <li><strong>Fall:</strong> Aug 16 - Dec 31</li>
+        </ul>
+    </body>
+</html>

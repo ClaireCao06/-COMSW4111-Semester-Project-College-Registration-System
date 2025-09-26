@@ -1,0 +1,148 @@
+<html>
+<head>
+    <title>Student Manage Calendar</title>
+    <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+</head>
+
+<body>
+    <h1>Welcome, student {{student_id}}!</h1>
+    <h1>Student Management - Year: {{year}} Term: {{term}}</h1>
+
+    <div>
+        <a href="{{url_for('student_manage', year = year, term = term)}}">Back to Student Dashboard</a>
+    </div>
+
+
+    <div class = "container">
+        {% if student_error_message %}
+            <div style="color: red; margin-top: 20px;">
+                <strong>{{student_error_message}}</strong>
+            </div>
+        {% elif student_message %}
+            <div style="color: green; margin-top: 20px;">
+                <strong>{{student_message}}</strong>
+            </div>
+        {% endif %} 
+
+        <div class = "card">
+            <div class = "card-header">
+                <h2 style="margin-top: 20px;">Calendar View</h2>
+            </div>
+            <div class = "card-body">
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Enrollment</h3>
+                <form method = "POST" action="{{url_for('student_manage_enrollment', year = year, term = term)}}">
+                    <table class = 'table'>
+                        <thead>
+                            <tr>
+                                <th class = "course-info">Course ID</th>
+                                <th class = "course-info">Course Name</th>
+                                <th class = "course-info">Course Information</th>
+                                <th class = "course-info">Section Number</th>
+                                <th class = "course-info">Instructor</th>
+                                <th class = "course-info">Time</th>
+                                <th class = "course-info">Location</th>
+                                <th class = "course-info">Grade</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for cid, enroll in stu_enroll.items() %}
+                                {% for sec_num, section in enroll.items() %}
+                                <tr>
+                                    <td>{{cid}}</td>
+                                    <td>{{section['cname']}}</td>
+                                    <td>credits: {{section['credits']}} <br>
+                                        instruction mode: {{section['instruction_mode']}} <br>
+                                        department: {{section['course_dept']}} <br>
+                                        major: {{section['major']}} <br>
+                                        academic_level: {{section['academic_level']}} <br>
+                                        prerequisite: {{section['cid_prerequisite']}}</td>
+                                    <td>{{sec_num}}</td>
+                                    <td>instructor ID: {{section['id']}} <br>
+                                        instructor Name: {{section['name']}} <br>
+                                        instructor Email: {{section['email']}} 
+                                    </td>
+                                    <td>
+                                        {% for day, time in section['time'].items() %}
+                                        {{day}}, {{time['tid']}} <br> {{time['start_time']}} - {{time['end_time']}} <br>
+                                        {% endfor %}   
+                                    </td>
+                                    <td>address: {{section['sec_address']}} <br>
+                                        building: {{section['bname']}} <br>
+                                        room number: {{section['room_num']}} <br>
+                                        capacity: {{section['capacity']}}
+                                    </td>
+                                    <td>{{section['grade']}}</td>
+                                    <td><button class="delete_btn" name = "delete_{{student_id}}_{{cid}}_{{sec_num}}" value="{{student_id}}_{{cid}}_{{sec_num}}">Drop</button></td>
+                                </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        <tbody> 
+                    </table>
+                </form>  
+
+
+
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Waitlist</h3>
+                <form method = "POST" action="{{url_for('student_manage_enrollment', year = year, term = term)}}">
+                    <table class = 'table'>
+                        <thead>
+                            <tr>
+                                <th class = "course-info">Course ID</th>
+                                <th class = "course-info">Course Name</th>
+                                <th class = "course-info">Course Information</th>
+                                <th class = "course-info">Section Number</th>
+                                <th class = "course-info">Instructor</th>
+                                <th class = "course-info">Time</th>
+                                <th class = "course-info">Location</th>
+                                <th class = "course-info">Join Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for cid, wl in stu_wl.items() %}
+                                {% for sec_num, section in wl.items() %}
+                                <tr>
+                                    <td>{{cid}}</td>
+                                    <td>{{section['cname']}}</td>
+                                    <td>credits: {{section['credits']}} <br>
+                                        instruction mode: {{section['instruction_mode']}} <br>
+                                        department: {{section['course_dept']}} <br>
+                                        major: {{section['major']}} <br>
+                                        academic_level: {{section['academic_level']}} <br>
+                                        prerequisite: {{section['cid_prerequisite']}}</td>
+                                    <td>{{sec_num}}</td>
+                                    <td>instructor ID: {{section['id']}} <br>
+                                        instructor Name: {{section['name']}} <br>
+                                        instructor Email: {{section['email']}} 
+                                    </td>
+                                    <td>
+                                        {% for day, time in section['time'].items() %}
+                                        {{day}}, {{time['tid']}} <br> {{time['start_time']}} - {{time['end_time']}} <br>
+                                        {% endfor %}   
+                                    </td>
+                                    <td>address: {{section['sec_address']}} <br>
+                                        building: {{section['bname']}} <br>
+                                        room number: {{section['room_num']}} <br>
+                                        capacity: {{section['capacity']}}
+                                    </td>
+                                    <td>{{section['join_date']}}</td>
+                                    <td><button class="delete_btn" name = "delete_wl_{{student_id}}_{{cid}}_{{sec_num}}" value="{{student_id}}_{{cid}}_{{sec_num}}">Drop</button></td>
+                                </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        <tbody> 
+                    </table>
+                </form>  
+                
+
+            </div>
+
+        </div>
+
+    </div>
+
+    
+        
+</body>
+</html>

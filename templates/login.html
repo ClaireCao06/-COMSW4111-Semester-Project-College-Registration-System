@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title>{{role}} Login</title>
+    <link rel = "stylesheet" href = "{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+    <div class = "container">
+        <h1>{{role}} Login</h1>
+        <form method = "POST" action = "{{url_for('student_login') if role == 'Student' else (url_for('instructor_login') if role == 'Instructor' else url_for('admin_login'))}}">
+            <div>
+                <label for = "ID">ID: </label>
+                <input type = "text" id = "ID" name = "ID" required>
+            </div>
+            <div>
+                <label for = "password">Password: </label>
+                <input type = "password" id = "password" name = "password" required>
+            </div>
+            <button type = "submit">Login</button>
+        </form>
+
+        {% if error_message %}
+            <div style="color: red; margin-top: 20px;">
+                <strong>{{error_message}}</strong>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

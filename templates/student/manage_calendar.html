@@ -1,0 +1,140 @@
+<html>
+<head>
+    <title>Student Manage Calendar</title>
+    <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+</head>
+
+<body>
+    <h1>Welcome, student {{student_id}}!</h1>
+    <h1>Student Management - Year: {{year}} Term: {{term}}</h1>
+
+    <div>
+        <a href="{{url_for('student_manage', year = year, term = term)}}">Back to Student Dashboard</a>
+    </div>
+
+
+    <div class = "container">
+        {% if student_error_message %}
+            <div style="color: red; margin-top: 20px;">
+                <strong>{{student_error_message}}</strong>
+            </div>
+        {% elif student_message %}
+            <div style="color: green; margin-top: 20px;">
+                <strong>{{student_message}}</strong>
+            </div>
+        {% endif %} 
+
+        <div class = "card">
+            <div class = "card-header">
+                <h2 style="margin-top: 20px;">Calendar View</h2>
+            </div>
+            <div class = "card-body">
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Holidays (Breaks)</h3>
+                <form method = "POST" action="{{url_for('student_manage_calendar', year = year, term = term)}}">
+                    <table class = "table">
+                        <thead>
+                            <tr>
+                                <th>Holiday Name</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hname, info in holidays.items() %}
+                            <tr>
+                                <td>{{hname}}</td>
+                                <td>{{info['from_date']}}</td>
+                                <td>{{info['end_date']}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+
+                <hr>
+
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Important days</h3>
+                <form method = "POST" action="{{url_for('student_manage_calendar', year = year, term = term)}}">
+                    <table class = "table">
+                        <thead>
+                            <tr>
+                                <th>Add / Waitlist Deadline</th>
+                                <th>Drop Deadline</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ddls[0]['add_waitlist_ddl']}}</td>
+                                <td>{{ddls[0]['drop_ddl']}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            
+                <hr>
+
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Courses Schedule</h3>
+                <form method = "POST" action="{{url_for('student_manage_calendar', year = year, term = term)}}">
+                    <table class = 'table'>
+                        <thead>
+                            <tr>
+                                <th class = "course-info">Course ID</th>
+                                <th class = "course-info">Course Name</th>
+                                <th class = "course-info">Section Number</th>
+                                <th class = "course-info">Instructor</th>
+                                <th class = "course-info">Time</th>
+                                <th class = "course-info">Location</th>
+                                <th class = "course-info">Grade</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for day, course_sec in weekly_courses.items() %}
+                            <tr>
+                                <td class = "course-info">{{day}}</td>
+                            <tr>
+                            
+                            <tr>
+                                <td colspan="7">
+                                     <!-- <table class = "table"> -->
+                                        <tbody>
+                                            {% for course in course_sec %}
+                                                <tr>
+                                                    <td>{{course['cid']}}</td>
+                                                    <td>{{course['section']['cname']}}</td>
+                                                    <td>{{course['sec_num']}}</td>
+                                                    <td>instructor ID: {{course['section']['id']}} <br>
+                                                        instructor Name: {{course['section']['name']}} <br>
+                                                        instructor Email: {{course['section']['email']}} 
+                                                    </td>
+                                                    <td>
+                                                        tid: {{course['section']['time'][day]['tid']}} <br> {{course['section']['time'][day]['start_time']}} - {{course['section']['time'][day]['end_time']}} <br> 
+                                                    </td>
+                                                    <td>address: {{course['section']['sec_address']}} <br>
+                                                        building: {{course['section']['bname']}} <br>
+                                                        room number: {{course['section']['room_num']}} <br>
+                                                        capacity: {{course['section']['capacity']}}
+                                                    </td>
+                                                    <td>{{course['section']['grade']}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                     <!-- </table> -->
+                                </td>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                                
+                        
+                </form>  
+
+            </div>
+
+        </div>
+
+    </div>
+
+    
+        
+</body>
+</html>

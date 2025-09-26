@@ -1,0 +1,101 @@
+<html>
+<head>
+    <title>Instructor Manage Student</title>
+    <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+</head>
+
+<body>
+    <h1>Welcome, instructor {{instructor_id}} !</h1>
+    <h1>Instructor Management - Year: {{year}} Term: {{term}}</h1>
+
+    
+    <div>
+        <a href="{{url_for('instructor_manage', year = year, term = term)}}">Back to Instructor Dashboard</a>
+    </div>
+
+    <div class = "container">
+
+        {% if student_error_message %}
+            <div style="color: red; margin-top: 20px;">
+                <strong>{{student_error_message}}</strong>
+            </div>
+        {% elif student_message %}
+            <div style="color: green; margin-top: 20px;">
+                <strong>{{student_message}}</strong>
+            </div>
+        {% endif %} 
+        
+
+        <div class = "card">
+            <div class = "card-header">
+                <h2 style="margin-top: 20px;">Student Management</h2>
+            </div>
+            
+            <div class = "card-body">
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Student Enrollment</h3>
+                <form method = "POST" action="{{url_for('instructor_manage_student', year = year, term = term)}}">
+                    <table class = 'table'>
+                        <thead>
+                            <tr>
+                                <th class = "course-info">Course ID</th>
+                                <th class = "course-info">Section Number</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for (cid, sec_num), enroll in enrolls_dict.items() %}
+                                {% if (cid, sec_num) in cid_sec %}
+                                <tr>
+                                    <td class = "course-info">{{cid}}</td>
+                                    <td class = "course-info">{{sec_num}}</td>
+                                </tr>                 
+                            
+                                <tr>
+                                    <td colspan = "7">
+                                        <table class = "table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Student ID</th>
+                                                    <th>Student Name</th>
+                                                    <th>Student Email</th>
+                                                    <th>Major</th>
+                                                    <th>Academic Level</th>
+                                                    <th>GPA</th>
+                                                    <th>Grade</th>
+                                                </tr>
+                                            </thead>
+                                        
+                                        <tbody>  
+                                            {% for sid, students in enroll.items() %}
+                                            <tr>
+                                                <td>{{sid}}</td>
+                                                <td>{{students['sname']}}</td>
+                                                <td>{{students['semail']}}</td>
+                                                <td>{{students['major']}}</td>
+                                                <td>{{students['academic_level']}}</td>
+                                                <td>{{students['gpa']}}</td>
+                                                <td><input type = "text" name = "new_grade_{{sid}}_{{cid}}_{{sec_num}}" value = "{{students['grade']}}"></td>
+                                                <td><button class = "update_btn" name = "update_{{sid}}_{{cid}}_{{sec_num}}" value = "{{sid}}_{{cid}}_{{sec_num}}">Update Grade</button></td>
+                                            </tr>
+                                            {% endfor %}
+                                        <tbody> 
+                                        </table>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>        
+           
+            
+                
+            </div>
+
+        </div>
+
+    </div>
+
+    
+</body>
+</html>

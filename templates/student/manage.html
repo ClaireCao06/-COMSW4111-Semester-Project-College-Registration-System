@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Student Dashboard</title>
+        <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+    </head>
+  
+    <body>
+        <h1>Welcome, student {{student_id}} !</h1>
+        <h1>Student Management - Year: {{year}} Term: {{term}}</h1>
+
+        <div>
+            <a href="{{url_for('student_dashboard', year = year, term = term)}}" class = "backlink">Back to Dashboard</a>
+        </div>
+
+
+        <div>
+            <a href = "{{url_for('student_manage_calendar', year=year, term=term)}}"><button class = 'index-button'>View Calendar</button></a> 
+            <a href = "{{url_for('student_manage_courseSearch', year=year, term=term)}}"><button class = 'index-button'>Search Courses</button></a>    
+            <a href = "{{url_for('student_manage_enrollment', year=year, term=term)}}"><button class = 'index-button'>Enrollment/Waitlist Management</button></a>      
+        </div>
+    </body>
+</html>

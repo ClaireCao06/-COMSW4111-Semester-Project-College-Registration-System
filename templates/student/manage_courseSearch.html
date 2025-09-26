@@ -1,0 +1,275 @@
+<html>
+<head>
+    <title>Student Manage Course</title>
+    <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+</head>
+
+<body>
+    <h1>Welcome, student {{student_id}} !</h1>
+    <h1>Student Management - Year: {{year}} Term: {{term}}</h1>
+
+    
+    <div>
+        <a href="{{url_for('student_manage', year = year, term = term)}}">Back to Student Dashboard</a>
+    </div>
+
+    <div class = "container">
+
+        {% if course_error_message %}
+            <div style="color: red; margin-top: 20px;">
+                <strong>{{course_error_message}}</strong>
+            </div>
+        {% elif course_message %}
+            <div style="color: green; margin-top: 20px;">
+                <strong>{{course_message}}</strong>
+            </div>
+        {% endif %} 
+        
+
+        <div class = "card">
+            <div class = "card-header">
+                <h2 style="margin-top: 20px;">Courses Search</h2>
+            </div>
+            
+            <div class = "card-body">
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Search for course: </h3>
+                    <form method = "POST" action="{{url_for('student_manage_courseSearch', year = year, term = term)}}">
+                        <select name = "new_cid">
+                            <option value = "" disabled selected>Select Course ID</option>
+                            {% for cid in course_section_info_details['cid'] %}
+                                <option value = "{{cid}}">{{cid}}</option> 
+                            {% endfor %}
+                        </select>
+
+                        <select name = "new_cname">
+                            <option value = "" disabled selected>Select Course Name</option>
+                            {% for cname in course_section_info_details['cname'] %}
+                                <option value = "{{cname}}">{{cname}}</option> 
+                            {% endfor %}
+                        </select>
+
+                        <select name = "new_course_major">
+                            <option value = "" disabled selected>Select Course Major</option>
+                            {% for major in course_section_info_details['major'] %}
+                                <option value = "{{major}}">{{major}}</option> 
+                            {% endfor %}
+                        </select>
+
+                        <select name = "new_academic_level">
+                            <option value = "" disabled selected>Select Academic Level</option>
+                            <option value = "undergraduate">undergraduate</option>
+                            <option value = "graduate">graduate</option>
+                            <option value = "PhD">PhD</option>
+                        </select>
+
+                        <select name = "new_sec_instruction_mode">
+                            <option value = "" disabled selected>Select Instruction Mode</option>
+                            <option value = "online">online</option>
+                            <option value = "in-person">in-person</option>
+                        </select>
+                        
+                        <select name = "new_sec_days_in_a_week">
+                            <option value = "" disabled selected>Select Days In A Week</option>
+                            {% for day in course_section_info_details['days_in_a_week'] %}
+                                <option value = "{{day}}">{{day}}</option> 
+                            {% endfor %}
+                        </select>
+                        
+
+                        <select name = "new_did">
+                            <option value = "" disabled selected>Select Department</option>
+                            {% for course_dept in course_section_info_details['course_dept'] %}
+                                <option value = "{{course_dept}}">{{course_dept}}</option> 
+                            {% endfor %}
+                        </select>
+                        
+                        <input type = "number" placeholder = "Credits" name = "new_credits">
+                        
+                        <select name = "new_id">
+                            <option value = "" disabled selected>Select Instructor</option>
+                            {% for id in course_section_info_details['id'] %}
+                                <option value = "{{id}}">{{id}}</option> 
+                            {% endfor %}
+                        </select>
+                        
+
+                        
+                        <button type = "submit" name = "search_course" value = "searchCourse">Search Course</button>
+                    </form>
+                    
+                    <hr>
+
+
+
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Available Courses</h3>
+                    <form method = "POST" action="{{url_for('student_manage_courseSearch', year = year, term = term)}}">
+                        <table class = 'table'>
+                            <thead>
+                                <tr>
+                                    <th class = "course-info">Course ID</th>
+                                    <th class = "course-info">Course Name</th>
+                                    <th class = "course-info">Credits</th>
+                                    <th class = "course-info">Major</th>
+                                    <th class = "course-info">Academic Level</th>
+                                    <th class = "course-info">Prerequisites</th>
+                                    <th class = "course-info">Course Department</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                {% for cid, course in course_section_info_filter.items() %}
+                                    <tr>
+                                        <td class = "course-info">{{cid}}</td>
+                                        <td class = "course-info">{{course['cname']}}</td>
+                                        <td class = "course-info">{{course['credits']}}</td>
+                                        <td class = "course-info">{{course['major']}}</td>
+                                        <td class = "course-info">{{course['academic_level']}}</td>
+                                        <td class = "course-info">{{course['cid_prerequisite']}}</td>
+                                        <td class = "course-info">{{course['dname']}} <br>did: {{course['course_dept']}} <br> address: {{course['course_dept_address']}}</td>
+                                    </tr>
+                        
+                                    <tr>
+                                        <td colspan="7">
+                                            <table class = "table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class = "section-info">Section Number</th>
+                                                        <th class = "section-info">Instruction Mode</th>
+                                                        <th class = "section-info">Max Capacity</th>
+                                                        <th class = "section-info">Actual Enrollment</th>
+                                                        <th class = "section-info">Instructor</th>
+                                                        <th class = "section-info">Location</th>
+                                                        <th class = "section-info">Time</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    {% for sec_num, section in course.items() %}
+                                                        {% if sec_num not in ['cname', 'credits', 'major', 'academic_level', 'cid_prerequisite', 'course_dept', 'dname', 'course_dept_address'] %}
+                                                            <tr>
+                                                                <td>{{sec_num}}</td>
+                                                                <td>{{section['instruction_mode']}}</td>
+                                                                <td>{{section['max_capacity']}}</td>
+                                                                <td>{{section['actual_enrollment']}}</td>
+                                                                <td>{{section['instructor']['name']}} <br> id: {{section['instructor']['id']}} <br> email: {{section['instructor']['email']}} <br> department: {{section['instructor']['instru_dept']}} <br> since: {{section['instructor']['since']}}</td>
+                                                                <td>{{section['address']['bname']}}, Room {{section['address']['room_num']}}<br>capacity: {{section['address']['capacity']}}<br> address: {{section['address']['sec_address']}} </td>
+                                                                <td>
+                                                                {% for day, time in section['time'].items() %}
+                                                                {{day}}, {{time['tid']}} <br> {{time['start_time']}} - {{time['end_time']}} <br>
+                                                                {% endfor %}   
+                                                                </td>
+                                                                <td><button class="add_btn" name = "add_{{cid}}_{{sec_num}}" value="{{cid}}_{{sec_num}}">Add</button></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>        
+        
+                        
+                    <hr>
+                         
+                    
+
+
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Instructor Information</h3>
+                    <form method = "POST" action="{{url_for('student_manage_courseSearch', year = year, term = term)}}">
+                        <table class = 'table'>
+                            <thead>
+                                <tr>
+                                    <th class = "course-info">Instructor ID</th>
+                                    <th class = "course-info">Instructor Name</th>
+                                    <th class = "course-info">Instructor Email</th>
+                                    <th class = "course-info">Department ID</th>
+                                    <th class = "course-info">Address</th>
+                                    <th class = "course-info">Since</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                {% for id, instructor in instructors.items() %}
+                                    <tr>
+                                        <td>{{id}}</td>
+                                        <td>{{instructor['name']}}</td>
+                                        <td>{{instructor['email']}}</td>
+                                        <td>{{instructor['did']}}</td>
+                                        <td>{{instructor['address']}}</td>
+                                        <td>{{instructor['since']}}</td>
+                                    <tr>
+                                {% endfor %}
+                            </tbody>
+                        
+                        </table>
+                    </form>
+
+                    <hr>
+                    
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Location Information</h3>
+                    <form method = "POST" action="{{url_for('student_manage_courseSearch', year = year, term = term)}}">
+                        
+                        
+                        <table class = 'table'>
+                            <thead>
+                                <tr>
+                                    <th class = "course-info">Building Name</th>
+                                    <th class = "course-info">Address</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                {% for address, classroom in classrooms.items() %}
+                                    <tr>
+                                        <td class = "course-info">{{classroom['bname']}}</td>
+                                        <td class = "course-info">{{address}}</td>
+                                    </tr>
+                        
+                                    <tr>
+                                        <td colspan="2">
+                                            <table class = "table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class = "section-info">Room Number</th>
+                                                        <th class = "section-info">Capacity</th>
+                                                    </tr>
+                                                </thead>
+    
+                                                <tbody>
+                                                    {% for room_num, room in classroom['classrooms'].items() %}
+                                                        {% if room_num not in ['bname'] %}
+                                                            <tr>
+                                                                <td>{{room_num}}</td>
+                                                                <td>{{room['capacity']}}</td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            
+                        
+                        </table>
+                    
+                    
+                    </form>
+
+                    
+
+
+                
+            </div>
+
+        </div>
+
+    </div>
+
+    
+</body>
+</html>

@@ -1,0 +1,92 @@
+<html>
+<head>
+    <title>Admin Manage Calendar</title>
+    <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+</head>
+
+<body>
+    <h1>Welcome, admin {{admin_id}} !</h1>
+    <h1>Admin Management - Year: {{year}} Term: {{term}}</h1>
+
+    <div>
+        <a href="{{url_for('admin_manage', year = year, term = term)}}">Back to Admin Dashboard</a>
+    </div>
+
+
+    <div class = "container">
+        {% if calendar_error_message %}
+        <div style="color: red; margin-top: 20px;">
+            <strong>{{calendar_error_message}}</strong>
+        </div>
+        {% elif calendar_message %}
+        <div style="color: green; margin-top: 20px;">
+            <strong>{{calendar_message}}</strong>
+        </div>
+        {% endif %} 
+        
+        
+        <div class = "card">
+            <div class = "card-header">
+                <h2 style="margin-top: 20px;">Calendar Management</h2>
+            </div>
+            <div class = "card-body">
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Holidays (Breaks)</h3>
+                <form method = "POST" action="{{url_for('admin_manage_calendar', year = year, term = term)}}">
+                    <table class = "table">
+                        <thead>
+                            <tr>
+                                <th>Holiday Name</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hname, info in holidays.items() %}
+                            <tr>
+                                <td>{{hname}}</td>
+                                <td>
+                                    <input type="date" name= "from_date_{{hname}}" value="{{info['from_date']}}">
+                                </td>
+                                <td>
+                                    <input type="date" name= "to_date_{{hname}}" value="{{info['end_date']}}">
+                                </td>
+                                <td>
+                                    <button class="update_btn" name = "update_{{hname}}" value="{{hname}}">Update</button>
+                                    <button class="delete_btn" name = "delete_{{hname}}" value="{{hname}}">Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+                
+
+                <h4>Add New Holiday</h4>
+                <form method = "POST" action="{{url_for('admin_manage_calendar', year = year, term = term)}}">
+                    <input type = "text" placeholder = "Holiday Name" name = "new_hname" required>
+                    <input type = "date" name = "new_from_date" required>
+                    <input type = "date" name = "new_to_date" required>
+                    <button type = "submit" name = "add_holiday" value = "addDDL">Add Holiday</button>
+                </form>
+
+                <hr>
+                
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Important days</h3>
+                <form method = "POST" action="{{url_for('admin_manage_calendar', year = year, term = term)}}">
+                    <label for = "add_wl_ddl">Add / Waitlist Deadline:</label>
+                    <input type = "date" name = "new_add_wl_ddl" id =  "new_add_wl_ddl" value="{{ddls[0]['add_waitlist_ddl']}}">
+                    <label for = "drop_ddl">Drop Deadline:</label>
+                    <input type = "date" name = "new_drop_ddl" id = "new_drop_ddl" value = "{{ddls[0]['drop_ddl']}}">
+                    <button class = "update_btn" name = "update_ddl" value = "updateDDL">Update DDL</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+    
+        
+</body>
+</html>

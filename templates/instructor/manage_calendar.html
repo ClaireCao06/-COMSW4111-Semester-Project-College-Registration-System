@@ -1,0 +1,123 @@
+<html>
+<head>
+    <title>Instructor Manage Calendar</title>
+    <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+</head>
+
+<body>
+    <h1>Welcome, instructor {{instructor_id}}!</h1>
+    <h1>Instructor Management - Year: {{year}} Term: {{term}}</h1>
+
+    <div>
+        <a href="{{url_for('instructor_manage', year = year, term = term)}}">Back to Instructor Dashboard</a>
+    </div>
+
+
+    <div class = "container">
+        
+        <div class = "card">
+            <div class = "card-header">
+                <h2 style="margin-top: 20px;">Calendar View</h2>
+            </div>
+            <div class = "card-body">
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Holidays (Breaks)</h3>
+                <form method = "POST" action="{{url_for('instructor_manage_calendar', year = year, term = term)}}">
+                    <table class = "table">
+                        <thead>
+                            <tr>
+                                <th>Holiday Name</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hname, info in holidays.items() %}
+                            <tr>
+                                <td>{{hname}}</td>
+                                <td>{{info['from_date']}}</td>
+                                <td>{{info['end_date']}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+                
+                <hr>
+
+                <h3 style = "color: rgb(51, 0, 255); margin-top: 20px;" >Course Schedule</h3>
+                <form method = "POST" action="{{url_for('instructor_manage_calendar', year = year, term = term)}}">
+                    <table class = 'table'>
+                        <thead>
+                            <tr>
+                                <th class = "course-info">Course ID</th>
+                                <th class = "course-info">Course Name</th>
+                                <th class = "course-info">Credits</th>
+                                <th class = "course-info">Major</th>
+                                <th class = "course-info">Academic Level</th>
+                                <th class = "course-info">Prerequisites</th>
+                                <th class = "course-info">Course Department</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            {% for cid, course in ins_course.items() %}
+                                <tr>
+                                    <td class = "course-info">{{cid}}</td>
+                                    <td class = "course-info">{{course['cname']}}</td>
+                                    <td class = "course-info">{{course['credits']}}</td>
+                                    <td class = "course-info">{{course['major']}}</td>
+                                    <td class = "course-info">{{course['academic_level']}}</td>
+                                    <td class = "course-info">{{course['cid_prerequisite']}}</td>
+                                    <td class = "course-info">{{course['dname']}} <br>did: {{course['course_dept']}} <br> address: {{course['course_dept_address']}}</td>
+                                </tr>
+                    
+                                <tr>
+                                    <td colspan="7">
+                                        <table class = "table">
+                                            <thead>
+                                                <tr>
+                                                    <th class = "section-info">Section Number</th>
+                                                    <th class = "section-info">Instruction Mode</th>
+                                                    <th class = "section-info">Max Capacity</th>
+                                                    <th class = "section-info">Actual Enrollment</th>
+                                                    <th class = "section-info">Instructor</th>
+                                                    <th class = "section-info">Location</th>
+                                                    <th class = "section-info">Time</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% for sec_num, section in course.items() %}
+                                                    {% if sec_num not in ['cname', 'credits', 'major', 'academic_level', 'cid_prerequisite', 'course_dept', 'dname', 'course_dept_address'] %}
+                                                        <tr>
+                                                            <td>{{sec_num}}</td>
+                                                            <td>{{section['instruction_mode']}}</td>
+                                                            <td>{{section['max_capacity']}}</td>
+                                                            <td>{{section['actual_enrollment']}}</td>
+                                                            <td>{{section['instructor']['name']}} <br> id: {{section['instructor']['id']}} <br> email: {{section['instructor']['email']}} <br> department: {{section['instructor']['instru_dept']}} <br> since: {{section['instructor']['since']}}</td>
+                                                            <td>{{section['address']['bname']}}, Room {{section['address']['room_num']}}<br>capacity: {{section['address']['capacity']}}<br> address: {{section['address']['sec_address']}} </td>
+                                                            <td>
+                                                            {% for day, time in section['time'].items() %}
+                                                            {{day}}, {{time['tid']}} <br> {{time['start_time']}} - {{time['end_time']}} <br>
+                                                            {% endfor %}   
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    
+        
+</body>
+</html>

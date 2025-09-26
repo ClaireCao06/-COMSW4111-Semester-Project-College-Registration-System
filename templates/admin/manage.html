@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Admin Dashboard</title>
+        <link rel = "stylesheet" href = "{{url_for('static', filename='styles.css')}}">
+    </head>
+  
+    <body>
+        <h1>Welcome, admin {{admin_id}} !</h1>
+        <h1>Admin Management - Year: {{year}} Term: {{term}}</h1>
+
+        <div>
+            <a href="{{url_for('admin_dashboard', year = year, term = term)}}" class = "backlink">Back to Dashboard</a>
+        </div>
+
+
+        <div>
+            <a href = "{{url_for('admin_manage_calendar', year=year, term=term)}}"><button class = 'index-button'>Calendar Management</button></a>     
+            <a href = "{{url_for('admin_manage_timeslot', year=year, term=term)}}"><button class = 'index-button'>TimeSlot Management</button></a> 
+            <a href = "{{url_for('admin_manage_course', year=year, term=term)}}"><button class = 'index-button'>Course Management</button></a> 
+            <a href = "{{url_for('admin_manage_student', year=year, term=term)}}"><button class = 'index-button'>Student Management</button></a>         
+        </div>
+    </body>
+</html>

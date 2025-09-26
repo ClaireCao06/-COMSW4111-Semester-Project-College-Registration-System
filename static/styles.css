@@ -1,0 +1,66 @@
+.index-button {
+  display: inline-block;
+  padding: 20px 40px; 
+  font-size: 15px; 
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 10px; 
+}
+
+.card {
+  border: 2px solid rgba(0, 0, 0, 0.9); 
+  border-radius: 8px;
+  margin-top: 20px; 
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0.1, 0.1);
+}
+
+.card-header {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table td, .table th {
+  padding: 8px; 
+  text-align: left;
+}
+
+.update_btn {
+  color: rgba(12, 121, 12, 0.82);
+  background-color: #c0eab8; 
+  border-color: rgba(12, 121, 12, 0.82);
+}
+
+.delete_btn{
+  color: rgba(145, 18, 18, 0.82);
+  background-color: #f8d7da; 
+  border-color: rgba(145, 18, 18, 0.82); 
+}
+
+.course-row {
+  font-weight: bold;
+  padding-left: 0;
+}
+.section-row {
+  padding-left: 20px;
+}
+
+.table .table {
+  border: 1px solid #ccc;
+  width: 90%;
+  background-color: #f9f9f9;  
+  margin: 20px;
+}
+
+
+.course-info{
+  font-weight: bold;
+}
