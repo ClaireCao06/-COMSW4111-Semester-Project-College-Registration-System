@@ -1,4 +1,4 @@
-# -COMSW4111-Semester-Project-College-Registration-System
+# COMSW411: Semester-Project-College-Registration-System
 
 A Python-based web server built as part of Columbia University’s CS4111: Introduction to Databases (Fall 2024).
 Developed in collaboration with my teammate Yang Zhang, this project implemented a scalable college registration system supporting three user groups: students, professors, and administrators. The system integrated multiple relational databases and supported core features including: Course enrollment and add/drop, waitlist management, conflict detection and resolution, grade submission, administrative reporting, etc. 
