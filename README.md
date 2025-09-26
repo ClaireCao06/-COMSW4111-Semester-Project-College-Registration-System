@@ -5,5 +5,5 @@ Developed in collaboration with my teammate Yang Zhang, this project implemented
 
 NOTE: The project was originally designed to work with PostgreSQL, where our database server was hosted. Since the course has ended, our PostgreSQL access has expired, so the live database integration is no longer active.
 
-📌 Recognition: This project was ranked Top 3 out of 300 projects in CS4111 (Fall 2024), recognized by Professor Luis Gravano.
+📌 Recognition: This project was ranked Top 3 out of 200 projects in CS4111 (Fall 2024), recognized by Professor Luis Gravano.
 
